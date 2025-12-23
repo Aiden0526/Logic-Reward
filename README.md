@@ -1,7 +1,7 @@
 
 # 🔥 LogicReward
 
-**Code and data for *“Training LLMs with LogicReward for Faithful and Rigorous Reasoning[placeholder_website]”***
+**Code and data for *“Training LLMs with LogicReward for Faithful and Rigorous Reasoning[http://arxiv.org/abs/2512.18196]”***
 
 
 ## 🧠 What is LogicReward?
@@ -32,7 +32,7 @@ LogicReward is a reward function that evaluates **unstructured natural language 
 
 ## 📰 News
 
-* **[2025.12.18]** 🎉 We release the **LogicReward paper on arXiv**!
+* **[2025.12.23]** 🎉 We release the **LogicReward paper on arXiv**!
 
 
 ## 🚀 Quick Start
@@ -262,4 +262,13 @@ Please follow the official documentation for both SFT and DPO training:
 
 If you use **LogicReward**, the codebase, the data, or the trained models in your research, please **cite our paper**.
 
+```
+@article{logicreward,
+  title        = {Training LLMs with LogicReward for Faithful and Rigorous Reasoning},
+  author       = {Jundong Xu and Hao Fei and Huichi Zhou and Xin Quan and Qijun Huang and Shengqiong Wu and William Yang Wang and Mong-Li Lee and Wynne Hsu},
+  journal      = {arXiv preprint arXiv:2512.18196},
+  year         = {2025},
+  url          = {https://arxiv.org/abs/2512.18196}
+}
+```
 
