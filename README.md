@@ -27,7 +27,19 @@ LogicReward is a reward function that evaluates **unstructured natural language 
   LogicReward improves not only final-task accuracy, but also the **faithfulness, logical consistency, and rigor of intermediate reasoning steps**.
 
 
+## 🧭 TODO
 
+### ✅ Completed Features
+
+* Full pipeline for **rollout generation**
+* **LogicReward-based reward labeling** for reasoning data
+
+### 🚧 Upcoming Improvements
+
+* 🔥 Release **two trained model weights** on Hugging Face
+* 🛠️ Improve usability:
+
+  * Support **custom rollout & reward labeling** with **one command**
 
 
 ## 📰 News
@@ -243,19 +255,7 @@ Please follow the official documentation for both SFT and DPO training:
 🔗 [https://github.com/hiyouga/LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 
 
-## 🧭 TODO
 
-### ✅ Completed Features
-
-* Full pipeline for **rollout generation**
-* **LogicReward-based reward labeling** for reasoning data
-
-### 🚧 Upcoming Improvements
-
-* 🔥 Release **two trained model weights** on Hugging Face
-* 🛠️ Improve usability:
-
-  * Support **custom rollout & reward labeling** with **one command**
 
 
 ## 📖 Citation
