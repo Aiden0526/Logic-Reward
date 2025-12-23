@@ -1,7 +1,7 @@
 
 # 🔥 LogicReward
 
-**Code and data for *“Training LLMs with LogicReward for Faithful and Rigorous Reasoning[http://arxiv.org/abs/2512.18196]”***
+**Code and data for *[“Training LLMs with LogicReward for Faithful and Rigorous Reasoning”](https://llm-symbol.github.io/LogicReward/)***
 
 
 ## 🧠 What is LogicReward?
