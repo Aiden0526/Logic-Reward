@@ -1,8 +1,11 @@
 
 # 🔥 LogicReward
 
-**Code and data for *[“Training LLMs with LogicReward for Faithful and Rigorous Reasoning”](https://llm-symbol.github.io/LogicReward/)***
+**Code and data for ICLR 2026 Paper *[“LogicReward: Incentivizing LLM Reasoning via Step-Wise Logical Supervision ”](https://llm-symbol.github.io/LogicReward/)***
 
+Authors: [**Jundong Xu**](https://aiden0526.github.io/)<sup>1</sup>, [**Hao Fei**](http://haofei.vip/)<sup>1</sup><sup>*</sup>, [**Huichi Zhou**](https://huichizhou.github.io/)<sup>2</sup>, [**Xin Quan**](https://xinquan42.github.io/)<sup>3</sup>, Qijun Huang<sup>4</sup>, [**Shengqiong Wu**](https://sqwu.top/)<sup>1</sup>, [**William Yang wang**](https://sites.cs.ucsb.edu/~william/)<sup>5</sup>, [**Mong-Li Lee**](https://www.comp.nus.edu.sg/cs/people/leeml/)<sup>1</sup>, [**Wynne Hsu**](https://www.comp.nus.edu.sg/cs/people/whsu/)<sup>1</sup>
+
+<sup>1</sup> National University of Singapore, <sup>2</sup> University College London, <sup>3</sup> University of Manchester, <sup>4</sup> University of Melbourne, <sup>5</sup> University of California, Santa Barbara
 
 ## 🧠 What is LogicReward?
 
