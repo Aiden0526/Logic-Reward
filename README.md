@@ -266,12 +266,12 @@ Please follow the official documentation for both SFT and DPO training:
 If you use **LogicReward**, the codebase, the data, or the trained models in your research, please **cite our paper**.
 
 ```
-@article{logicreward,
-  title        = {Training LLMs with LogicReward for Faithful and Rigorous Reasoning},
-  author       = {Jundong Xu and Hao Fei and Huichi Zhou and Xin Quan and Qijun Huang and Shengqiong Wu and William Yang Wang and Mong-Li Lee and Wynne Hsu},
-  journal      = {arXiv preprint arXiv:2512.18196},
-  year         = {2025},
-  url          = {https://arxiv.org/abs/2512.18196}
+@article{logicreward2026,
+  title   = {LogicReward: Incentivizing LLM Reasoning via Step-Wise Logical Supervision},
+  author  = {Jundong Xu, Hao Fei, Huichi Zhou, Xin Quan, Qijun Huang, Shengqiong Wu, William Yang Wang, Mong-Li Lee, Wynne Hsu},
+  booktitle = {Proceedings of the International Conference on Learning Representations},
+  year    = {2026},
+  url = {https://arxiv.org/abs/2512.18196}
 }
 ```
 
