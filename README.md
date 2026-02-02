@@ -1,5 +1,5 @@
 
-# 🔥 LogicReward
+# LogicReward
 
 **Code and data for ICLR 2026 Paper *[“LogicReward: Incentivizing LLM Reasoning via Step-Wise Logical Supervision ”](https://llm-symbol.github.io/LogicReward/)***
 
@@ -10,8 +10,13 @@ Authors: [**Jundong Xu**](https://aiden0526.github.io/)<sup>1</sup>, [**Hao Fei*
 ## 🧠 What is LogicReward?
 
 LogicReward is a reward function that evaluates **unstructured natural language reasoning and provides step-level, symbolically guided rewards**. 
-You can directly access the trained models — **LogicReward-Qwen3-8B** and **LogicReward-Llama3.1-8B** — from the following Hugging Face collection:  
+
+
+## 🔥 Quick Start
+
+You can directly access the trained models — **LogicReward-Qwen3-8B** and **LogicReward-Llama3.1-8B** — via the following Hugging Face collection:  
 https://huggingface.co/collections/Aiden0526/logicreward
+
 
 ## 📈 Performance
 
