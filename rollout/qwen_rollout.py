@@ -3,7 +3,7 @@
 Multi-sample rollout generation with Ray Data + vLLM.
 
 - Reads a JSONL dataset of items with fields:
-    - "premise"
+    - "premise" (or "premises")
     - "question"
     - "id" (dataset-specific id)
     - optional: "answer"
@@ -373,7 +373,8 @@ def main() -> None:
     # Preprocess: strings + messages + prompt_len
     # -----------------------------------------------------------------------
     def _preprocess_strings(row: Dict[str, Any]) -> Dict[str, Any]:
-        premise_str = to_text(row["premise"])
+        premise_value = row.get("premise", row.get("premises", ""))
+        premise_str = to_text(premise_value)
         question_str = to_text(row["question"])
 
         messages = build_messages(

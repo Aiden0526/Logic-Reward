@@ -37,12 +37,21 @@ echo
 export PATH="$PATH:${ISABELLE_PATH}"
 export ISABELLE_MAX_CONCURRENCY=1
 
-conda run -n "${CONDA_ENV}" --no-capture-output \
-  python "${SCRIPT}" \
-    -p "${PORT}" \
-    -i "${INPUT}" \
-    -o "${OUTPUT}" \
-    -s "${PROCESSED}" \
-    -d "single_thread"
+mkdir -p "$(dirname "${OUTPUT}")"
+
+cmd=(
+  conda run -n "${CONDA_ENV}" --no-capture-output
+  python "${SCRIPT}"
+  -p "${PORT}"
+  -i "${INPUT}"
+  -o "${OUTPUT}"
+  -d "single_thread"
+)
+
+if [[ -n "${PROCESSED}" ]]; then
+  cmd+=( -s "${PROCESSED}" )
+fi
+
+"${cmd[@]}"
 
 echo "[done] Rewarded data written to: ${OUTPUT}"

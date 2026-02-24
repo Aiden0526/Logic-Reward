@@ -59,9 +59,9 @@ from critique import IsabelleCritique  # type: ignore
 # =========================
 # Defaults & Constants
 # =========================
-# DEFAULT_INPUT = "./reward_data/pr_sampled.jsonl"
+DEFAULT_INPUT = "./reward_data/rewarded_data_single.jsonl"
 DEFAULT_OUTPUT = "./reward_data/Multi-Thread/refined_reasoning.jsonl"
-# DEFAULT_PROCESSED = "./reward_data/refined_reasoning.jsonl"  # file or directory
+DEFAULT_PROCESSED = ""  # file or directory; empty means no skipping
 DEFAULT_THEORY_NAME = "symb_1"
 DEFAULT_MAX_WORKERS = 1
 DEFAULT_MAX_ITEMS: Optional[int] = None
@@ -164,6 +164,8 @@ def save_output_sharded(output_json: dict | str, base_out_path: str, max_workers
 
 def load_processed_ids(path: str) -> Set[str]:
     ids: Set[str] = set()
+    if not path:
+        return ids
     p = Path(path)
     if not p.exists():
         return ids

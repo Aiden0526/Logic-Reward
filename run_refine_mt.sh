@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # Config
-N=100
-BASE_PORT=10000
-
-
-
-INPUT=./reward_data/Multi-Thread/output/output
-OUT_BASE=./refine_data/Multi-Thread/output/output
-# PROCESSED=./refine_data/refined.jsonl # if you have refined part of it and want to exclude for repeatitive refine, then replace this path to your refined data
+: "${N:=5}"
+: "${BASE_PORT:=10000}"
+: "${INPUT:=./reward_data/Multi-Thread/output/output}"
+: "${OUT_BASE:=./refine_data/Multi-Thread/output/output}"
+: "${PROCESSED:=}"
+: "${CONDA_ENV:={ENV_NAME}}"
+: "${ISABELLE_PATH:=/workspace/Isabelle2023/bin}"
+: "${SCRIPT:=refine_reasoning.py}"
 
 # 1) Make shards (uncomment if you actually need shards)
 # split -d -n l/$N "$INPUT" /tmp/pr_shard_
@@ -28,16 +28,14 @@ for (( i=0; i<N; i++ )); do
   fi
 
   tmux new-session -d -s "refine_$i" bash -lc "
-    PATH=\"$PATH:/home/Jundong0526/symb-r1/peirce/Isabelle2023/bin\" \
-    ISABELLE_MAX_CONCURRENCY=1 \
-    conda run -n symb-r1 --no-capture-output \
-      python refine_reasoning.py \
-        --port \"$port\" \
-        --input  \"$in\" \
-        --output \"$out\" \
-        --processed \"$PROCESSED\" \
-        --theory-name \"symb_${shard}\" \
-        --max-workers 1
+    export PATH=\"\$PATH:$ISABELLE_PATH\"
+    export ISABELLE_MAX_CONCURRENCY=1
+    mkdir -p \"$(dirname "$out")\"
+    if [[ -n \"$PROCESSED\" ]]; then
+      conda run -n \"$CONDA_ENV\" --no-capture-output python \"$SCRIPT\" --port \"$port\" --input \"$in\" --output \"$out\" --processed \"$PROCESSED\" --theory-name \"symb_${shard}\" --max-workers 1
+    else
+      conda run -n \"$CONDA_ENV\" --no-capture-output python \"$SCRIPT\" --port \"$port\" --input \"$in\" --output \"$out\" --theory-name \"symb_${shard}\" --max-workers 1
+    fi
   "
   sleep 0.15
 done

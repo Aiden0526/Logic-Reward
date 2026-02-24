@@ -121,6 +121,58 @@ Navigate to the rollout directory:
 cd rollout
 ```
 
+### ✅ Recommended custom-data workflow (Step 1 / 2)
+
+To use your own data smoothly, first run **rollout** on your custom input, then run **LogicReward** (next section).
+
+#### 1) Prepare your custom rollout input (no conversion script needed)
+
+Your custom input should contain at least:
+- `id`
+- `premise` (or `premises`)
+- `question`
+- `answer` (recommended; used later for reward outcome scoring)
+
+If you already have reasoning text and want it to be parsed into reward-ready format later, each reasoning sample should follow this style:
+- `Step n:` (actual step number)
+- `Premise:` or `Premises:`
+- `Assumption:` (or `Assumptions:`)
+- `Inference:` / `Inferece:` / `Conclusion:`
+- final line as `Final answer: [LABEL]` (or `<answer>LABEL</answer>`)
+
+Save your custom data directly as `rollout/data_custom.jsonl` (one JSON object per line).
+
+Example (JSONL row):
+
+```json
+{"id":"custom_1","premise":"...","question":"...","answer":"True"}
+```
+
+#### 2) Point the rollout script to your custom file
+
+Open `qwen_rollout.py` and set:
+
+- `INPUT_JSONL = "./data_custom.jsonl"`
+
+#### 3) Run rollout
+
+```bash
+python qwen_rollout.py
+```
+
+#### 4) Convert rollout output into reward-ready format (CLI, no notebook)
+
+```bash
+python ../scripts/prepare_reward_data.py --input ./qwen_rollout.jsonl --output ./rollout_processed.jsonl
+```
+
+The parser supports custom reasoning text with step blocks like:
+- `Step n:`
+- `Premise:` / `Premises:`
+- `Assumption:` / `Assumptions:`
+- `Conclusion:` / `Inference:` / `Inferece:`
+- final answer as either `<answer>LABEL</answer>` or `Final answer: [LABEL]`
+
 ### ▶️ Qwen Rollout
 
 ```bash
@@ -141,14 +193,23 @@ openai_rollout.ipynb
 
 3. After generating both **Qwen** and **OpenAI** rollouts, run:
 
-```text
-prepare_reward_data.ipynb
+```bash
+python ../scripts/prepare_reward_data.py --input ./qwen_rollout.jsonl --output ./rollout_processed.jsonl
 ```
 
-This converts rollout outputs into **reward-ready format**.
+This converts rollout outputs into **reward-ready format** (CLI replacement for `prepare_reward_data.ipynb`).
 
 
 ## 🧮 LogicReward (Reward Labeling)
+
+This is **Step 2 / 2** after you have rollout data (`rollout_processed.jsonl`).
+
+Workflow summary:
+1. Prepare your custom JSONL in the rollout input format (`id`, `premise`/`premises`, `question`, `answer`)
+2. Use our rollout code on your custom data (Section: `## 🔄 Rollout`)
+3. Convert rollout output to `rollout_processed.jsonl`
+4. Run LogicReward to produce reward-labeled data
+5. (Optional) Run refinement and then construct final training data via `construct_training_data.ipynb`
 
 ### 🔹 Standalone Mode (Direct Execution)
 
@@ -193,6 +254,22 @@ reward_data/Multi-Thread/output/
 ```
 
 This data will be used for **training dataset construction**.
+
+### 🔹 Custom rollout → LogicReward (single-command run)
+
+If you already have `rollout/rollout_processed.jsonl` from your custom rollout, you can run LogicReward with:
+
+```bash
+CONDA_ENV=<YOUR_ENV> ISABELLE_PATH=/path/to/Isabelle2023/bin bash run_reward.sh
+```
+
+The rewarded output (default) is:
+
+```text
+reward_data/rewarded_data_single.jsonl
+```
+
+This reward-labeled file is the input to the downstream training-data construction step.
 
 
 ## 🔧 Refinement
@@ -256,6 +333,14 @@ This notebook:
 * Uses `good_answer` as the **SFT target**
 * Uses `good_answer` vs. `bad_answer` for **preference learning**
 
+Final training examples typically contain fields such as:
+
+* `id`
+* `question`
+* `good_answer`
+* `bad_answer`
+* `reward`
+
 
 ## 🏋️ Training
 
@@ -281,4 +366,3 @@ If you use **LogicReward**, the codebase, the data, or the trained models in you
   url = {https://arxiv.org/abs/2512.18196}
 }
 ```
-

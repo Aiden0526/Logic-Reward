@@ -7,7 +7,7 @@ set -euo pipefail
 : "${CONDA_ENV:={ENV_NAME}}"
 
 # Path to Isabelle's bin directory
-: "${ISABELLE_PATH:=/path/to/Isabelle2023/bin}"
+: "${ISABELLE_PATH:=/workspace/Isabelle2023/bin}"
 
 # Input rewarded data (single JSONL)
 # e.g. merged from Multi-Thread shards or produced by a single rollout
@@ -43,13 +43,22 @@ echo
 export PATH="$PATH:${ISABELLE_PATH}"
 export ISABELLE_MAX_CONCURRENCY=1
 
-conda run -n "${CONDA_ENV}" --no-capture-output \
-  python "${SCRIPT}" \
-    --port "${PORT}" \
-    --input "${INPUT}" \
-    --output "${OUTPUT}" \
-    --processed "${PROCESSED}" \
-    --theory-name "${THEORY_NAME}" \
-    --max-workers 1
+mkdir -p "$(dirname "${OUTPUT}")"
+
+cmd=(
+  conda run -n "${CONDA_ENV}" --no-capture-output
+  python "${SCRIPT}"
+  --port "${PORT}"
+  --input "${INPUT}"
+  --output "${OUTPUT}"
+  --theory-name "${THEORY_NAME}"
+  --max-workers 1
+)
+
+if [[ -n "${PROCESSED}" ]]; then
+  cmd+=( --processed "${PROCESSED}" )
+fi
+
+"${cmd[@]}"
 
 echo "[done] Refined data written to: ${OUTPUT}"

@@ -6,16 +6,16 @@ set -euo pipefail
 
 
 : "${SPLIT_INPUT:=./rollout/rollout_processed.jsonl}" 
-: "${SPLIT_OUTPUT_DIR:=./reward_data/Multi_Thread/input}"
+: "${SPLIT_OUTPUT_DIR:=./reward_data/Multi-Thread/input}"
 
 python prepare_mt_input.py \
   --input "${SPLIT_INPUT}" \
   --output-dir "${SPLIT_OUTPUT_DIR}" \
   --threads "${N}"
 
-: "${INPUT_PREFIX:=./reward_data/Multi_Thread/input/input}"
-: "${OUT_PREFIX:=./reward_data/Multi_Thread/output/output}"
-# : "${PROCESSED:=./reward_data/Multi_Thread/processed_ids.jsonl}"
+: "${INPUT_PREFIX:=./reward_data/Multi-Thread/input/input}"
+: "${OUT_PREFIX:=./reward_data/Multi-Thread/output/output}"
+: "${PROCESSED:=}"
 : "${CONDA_ENV:={ENV_NAME}}"              
 : "${SCRIPT:=label_reward_batch.py}"        
 : "${ISABELLE_PATH:=/workspace/Isabelle2023/bin}"
@@ -34,13 +34,12 @@ for (( i=0; i<N; i++ )); do
   tmux new-session -d -s "job_${i}" bash -lc "
     export PATH=\"\$PATH:$ISABELLE_PATH\"
     export ISABELLE_MAX_CONCURRENCY=1
-    conda run -n \"$CONDA_ENV\" --no-capture-output \
-      python \"$SCRIPT\" \
-        -p \"$port\" \
-        -i \"$in\" \
-        -o \"$out\" \
-        -s \"$PROCESSED\" \
-        -d \"shard_${shard}\"
+    mkdir -p \"$(dirname "$out")\"
+    if [[ -n \"$PROCESSED\" ]]; then
+      conda run -n \"$CONDA_ENV\" --no-capture-output python \"$SCRIPT\" -p \"$port\" -i \"$in\" -o \"$out\" -s \"$PROCESSED\" -d \"shard_${shard}\"
+    else
+      conda run -n \"$CONDA_ENV\" --no-capture-output python \"$SCRIPT\" -p \"$port\" -i \"$in\" -o \"$out\" -d \"shard_${shard}\"
+    fi
   "
   sleep 0.15
 done
