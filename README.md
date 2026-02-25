@@ -272,6 +272,58 @@ reward_data/rewarded_data_single.jsonl
 This reward-labeled file is the input to the downstream training-data construction step.
 
 
+## 🧩 Formalization (Use LogicReward Formalization on Your Own Data)
+
+This uses the **existing LogicReward formalization pipeline** (`formalisation/` + `critique/isabelle.py`) to:
+
+1. formalize natural-language reasoning into Isabelle code
+2. call Isabelle to check/solve it
+3. output a formalization result (e.g., `provable`, `not_provable`, `syntax_error`)
+
+### 🔹 Input format (JSONL)
+
+Provide a JSONL file (one JSON object per line) with:
+
+* `id` (recommended)
+* `premise` or `premises`
+* `explanation` (or `reasoning` / `good_answer`)
+* `hypothesis` (or `question` / `goal`)
+
+Notes:
+
+* `premises` can be a list of strings or a single string
+* the script uses your existing `config.yaml` (OpenAI key + `isabelle.master_dir`)
+
+### 🔹 One-command run (custom data)
+
+```bash
+python scripts/formalize_with_logicreward.py \
+  --input /path/to/custom_formalization_input.jsonl \
+  --output /path/to/custom_formalization_output.jsonl \
+  --config config.yaml \
+  --model gpt-4o \
+  --port 51200
+```
+
+### 🔹 Example input row
+
+```json
+{"id":"ex1","premises":["All mammals are animals.","Whales are mammals."],"explanation":"Step 1:\\nPremise: All mammals are animals. Whales are mammals.\\nAssumption: Whales are instances of mammals.\\nInference: Whales are animals.\\nFinal answer: [True]","hypothesis":"Whales are animals."}
+```
+
+### 🔹 Output
+
+The script writes your original fields plus a `formalization` object containing:
+
+* `answer` (`provable` / `not_provable` / `syntax_error`)
+* `syntactic_validity`
+* `semantic_validity`
+* `code` (generated Isabelle code)
+* `proof_tactics`
+* `error_code`
+* `logical_information`
+
+
 ## 🔧 Refinement
 
 After obtaining reward-labeled data, you can refine the generated reasoning.
