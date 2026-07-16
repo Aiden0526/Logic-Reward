@@ -17,6 +17,8 @@ LogicReward is a reward function that evaluates **unstructured natural language 
 You can directly access the trained models — **LogicReward-Qwen3-8B** and **LogicReward-Llama3.1-8B** — via the following Hugging Face collection:  
 https://huggingface.co/collections/Aiden0526/logicreward
 
+You could also use the generated data in `logicreward_data` to directly train the model. Please follow the training and inference details specified in this repo and the paper.
+
 
 ## 📈 Performance
 
